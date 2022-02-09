@@ -11,6 +11,7 @@ var body = document.body;
 // use this to remove all intro content after start button is clicked
 var intro = document.querySelector("#intro");
 var countdown = document.createElement("h3");
+var startBtn = document.querySelector("#startQuiz");
 var displayQuestion = document.createElement("h1");
 // display choices in ordered list
 var choicesSection = document.createElement("ol");
@@ -35,8 +36,9 @@ choicesSection.appendChild(displayChoice3);
 choicesSection.appendChild(displayChoice4);
 
 body.setAttribute("style", "text-align:center;");
-countdown.setAttribute("style", "text-align:right; margin-right:100px;");
+startBtn.setAttribute("style", "font-size: 30px; background-color:aqua; color: darkblue; font-weight: bold; border-radius: 7px; padding: 10px;")
+countdown.setAttribute("style", "text-align:right; margin-right:100px; font-size: 25px;");
 displayQuestion.setAttribute("style", "margin:auto; padding:30px; font-size:45px;");
-choicesSection.setAttribute("style", "margin-left: 200px; text-align:left;");
+choicesSection.setAttribute("style", "margin-left: 200px; text-align:left; list-style:none;");
 
 
