@@ -58,7 +58,7 @@ const questions = [
         choice2: "36",
         choice3: "44",
         choice4: "52",
-        answer: 5,
+        answer: 4,
     },
     {
         question: "What was the first song released by the Beach Boys?",
@@ -77,37 +77,64 @@ const questions = [
         answer: 3,
     },
 ]
+// end of questions
 
+// start game
 var startQuiz = function () {
     // when startBtn is clicked, remove intro html
     // start timer
     // display questions
     intro.innerHTML = "";
     intro.setAttribute("style", "margin-top: 0px;");
-    countdownDisplay.textContent = "60 seconds";
-
-   
-    displayQuestion.textContent = questions[1].question;
-    displayChoice1.textContent = questions[1].choice1;
-    displayChoice2.textContent = questions[1].choice2;
-    displayChoice3.textContent = questions[1].choice3;
-    displayChoice4.textContent = questions[1].choice4;
-
-    // print questions and choices to screen
-    body.appendChild(countdownDisplay);
-    body.appendChild(displayQuestion);
-    body.appendChild(choicesSection);
-    choicesSection.appendChild(displayChoice1);
-    choicesSection.appendChild(displayChoice2);
-    choicesSection.appendChild(displayChoice3);
-    choicesSection.appendChild(displayChoice4);
-    console.log(questions[1].answer);
+    // countdownDisplay.textContent = "60 seconds";
+    countdown();
 };
+
+// var nextQuestion = function () {
+// // if there are more questions
+// // display next question and choices in array
+// // when an answer is clicked, check to see if correct
+// // if correct, display next question
+// // if incorrect time = time -20
+// for (var i = 0; i < questions.length; i++) {
+
+//     displayQuestion.textContent = questions[i].question;
+//     displayChoice1.textContent = questions[i].choice1;
+//     displayChoice2.textContent = questions[i].choice2;
+//     displayChoice3.textContent = questions[i].choice3;
+//     displayChoice4.textContent = questions[i].choice4;
+//     // console.log(questions[i].question);
+//     // console.log(questions[i].answer);
+
+
+// // print questions and choices to screen
+body.appendChild(countdownDisplay);
+// body.appendChild(displayQuestion);
+// body.appendChild(choicesSection);
+// choicesSection.appendChild(displayChoice1);
+// choicesSection.appendChild(displayChoice2);
+// choicesSection.appendChild(displayChoice3);
+// choicesSection.appendChild(displayChoice4);
+// }
+
 
 // start timer at 60, deduct 20 seconds for wrong answers
 countdown = function () {
     // wrong answers:
-    time = time - 20;
+    // timeLeft = timeLeft - 20;
+    var timeLeft = 5;
+
+    var timerInterval = setInterval(function() {
+    if (timeLeft > 0) {
+        countdownDisplay.innerText = timeLeft;
+        timeLeft--;
+    }
+    else{
+        countdownDisplay.innerText = "";
+        clearInterval(timerInterval);
+        console.log("time's up!")
+    }
+}, 1000);
 };
 
 // start quiz
