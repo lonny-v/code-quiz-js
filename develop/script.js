@@ -10,6 +10,7 @@
 var body = document.body;
 // use this to remove all intro content after start button is clicked
 var intro = document.querySelector("#intro");
+// display time left in countdown
 var countdownDisplay = document.createElement("h3");
 var startBtn = document.querySelector("#startBtn");
 var displayQuestion = document.createElement("h1");
@@ -20,12 +21,14 @@ var displayChoice2 = document.createElement("li");
 var displayChoice3 = document.createElement("li");
 var displayChoice4 = document.createElement("li");
 
+var timeLeft = 60;
+
 
 // element styling
 body.setAttribute("style", "text-align:center;");
 intro.setAttribute("style", "margin-top:200px; line-height: 2.8;");
 startBtn.setAttribute("style", "font-size: 30px; background-color:aqua; color: darkblue; font-weight: bold; border-radius: 7px; padding: 10px 30px;")
-countdownDisplay.setAttribute("style", "text-align:right; margin: 45px 100px; font-size: 25px;");
+countdownDisplay.setAttribute("style", "text-align:right; margin: 45px 100px; font-size: 40px;");
 displayQuestion.setAttribute("style", "width:100%;font-size:45px; background-color: darkblue; color: white; padding:30px;");
 choicesSection.setAttribute("style", "margin:100px; text-align:left; list-style:none; font-size:30px; margin:none; padding:none;");
 displayChoice1.setAttribute("style", "background-color: lightblue; margin-bottom: 10px; padding: 20px 60px;");
@@ -35,6 +38,9 @@ displayChoice4.setAttribute("style", "background-color: lightblue; margin-bottom
 // end element styling
 
 // questions and answers
+
+var questionCounter = 0;
+const maxQuestions = 5;
 const questions = [
     {
         question: "How many strings are there on a concert grand pedal harp?",
@@ -42,7 +48,7 @@ const questions = [
         choice2: "36",
         choice3: "44",
         choice4: "52",
-        answer: 3,
+        answer: "44",
     },
     {
         question: "When was Jurassic Park 1 released?",
@@ -50,7 +56,7 @@ const questions = [
         choice2: "1996",
         choice3: "1995",
         choice4: "1999",
-        answer: 1,
+        answer: "1993",
     },
     {
         question: "How old was Abraham Lincoln when he took office as President?",
@@ -58,7 +64,7 @@ const questions = [
         choice2: "36",
         choice3: "44",
         choice4: "52",
-        answer: 4,
+        answer: "52",
     },
     {
         question: "What was the first song released by the Beach Boys?",
@@ -66,76 +72,97 @@ const questions = [
         choice2: "Surfin'",
         choice3: "California Girls",
         choice4: "Help me, Rhonda",
-        answer: 2,
+        answer: "Surfin'",
     },
     {
-        question: "How many flavors of ice cream is Bask Robins famous for?",
+        question: "How many flavors of ice cream is Baskin Robins famous for?",
         choice1: "32",
         choice2: "40",
         choice3: "31",
         choice4: "35",
-        answer: 3,
+        answer: "31",
     },
-]
-// end of questions
+]// end of questions
 
 // start game
 var startQuiz = function () {
     // when startBtn is clicked, remove intro html
     // start timer
-    // display questions
+    // display question first question
     intro.innerHTML = "";
     intro.setAttribute("style", "margin-top: 0px;");
-    // countdownDisplay.textContent = "60 seconds";
+    body.appendChild(countdownDisplay);
     countdown();
+    nextQuestion();
 };
 
-// var nextQuestion = function () {
-// // if there are more questions
-// // display next question and choices in array
-// // when an answer is clicked, check to see if correct
-// // if correct, display next question
-// // if incorrect time = time -20
-// for (var i = 0; i < questions.length; i++) {
+var nextQuestion = function () {
 
-//     displayQuestion.textContent = questions[i].question;
-//     displayChoice1.textContent = questions[i].choice1;
-//     displayChoice2.textContent = questions[i].choice2;
-//     displayChoice3.textContent = questions[i].choice3;
-//     displayChoice4.textContent = questions[i].choice4;
-//     // console.log(questions[i].question);
-//     // console.log(questions[i].answer);
+    // // if there are more questions
+    // // display next question and choices in array
+    // // when an answer is clicked, check to see if correct
+    // if incorrect subtract 20 seconds
+    if (!questions[questionCounter]) {
+        endGame();
+        return
+    }
+
+    displayQuestion.textContent = questions[questionCounter].question;
+    displayChoice1.textContent = questions[questionCounter].choice1;
+    displayChoice2.textContent = questions[questionCounter].choice2;
+    displayChoice3.textContent = questions[questionCounter].choice3;
+    displayChoice4.textContent = questions[questionCounter].choice4;
+
+    body.appendChild(displayQuestion);
+    body.appendChild(choicesSection);
+    choicesSection.appendChild(displayChoice1);
+    choicesSection.appendChild(displayChoice2);
+    choicesSection.appendChild(displayChoice3);
+    choicesSection.appendChild(displayChoice4);
+
+};
+
+var checkAnswer = function (event) {
+    var clicked = event.target;
 
 
-// // print questions and choices to screen
-body.appendChild(countdownDisplay);
-// body.appendChild(displayQuestion);
-// body.appendChild(choicesSection);
-// choicesSection.appendChild(displayChoice1);
-// choicesSection.appendChild(displayChoice2);
-// choicesSection.appendChild(displayChoice3);
-// choicesSection.appendChild(displayChoice4);
-// }
-
+    if (clicked.innerText === questions[questionCounter].answer) {
+        console.log("yay")
+        // nextQuestion();
+        console.log(timeLeft);
+    }
+    else {
+        console.log("nope");
+        timeLeft = timeLeft - 20;
+        console.log(timeLeft);
+    }
+    questionCounter++
+    nextQuestion();
+};
 
 // start timer at 60, deduct 20 seconds for wrong answers
 countdown = function () {
-    // wrong answers:
-    // timeLeft = timeLeft - 20;
-    var timeLeft = 5;
 
-    var timerInterval = setInterval(function() {
-    if (timeLeft > 0) {
-        countdownDisplay.innerText = timeLeft;
-        timeLeft--;
-    }
-    else{
-        countdownDisplay.innerText = "";
-        clearInterval(timerInterval);
-        console.log("time's up!")
-    }
-}, 1000);
+    var timerInterval = setInterval(function () {
+        if (timeLeft > 0) {
+            countdownDisplay.innerText = timeLeft;
+            timeLeft--;
+        }
+        else {
+            countdownDisplay.innerText = "";
+            clearInterval(timerInterval);
+            console.log("time's up!")
+            // endGame();
+        }
+    }, 1000);
 };
+
+endGame = function () {
+    // display score
+    // prompt for initials
+    // save initials in localStorage
+}
 
 // start quiz
 startBtn.addEventListener("click", startQuiz);
+choicesSection.addEventListener("click", checkAnswer);
