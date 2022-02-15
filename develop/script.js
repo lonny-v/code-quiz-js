@@ -20,11 +20,11 @@ var displayChoice1 = document.createElement("li");
 var displayChoice2 = document.createElement("li");
 var displayChoice3 = document.createElement("li");
 var displayChoice4 = document.createElement("li");
-var highScore = document.createElement("form");
+var highScore = document.createElement("h2");
 var initInput = document.createElement("input");
 var initBtn = document.createElement("button");
 
-var timeLeft = 30;
+var timeLeft = 60;
 
 
 // element styling
@@ -40,10 +40,7 @@ displayChoice3.setAttribute("style", "background-color: lightblue; margin-bottom
 displayChoice4.setAttribute("style", "background-color: lightblue; margin-bottom: 10px; padding: 20px 60px;");
 highScore.setAttribute("style", "margin-top: 100px; font-size: 30px;");
 initBtn.setAttribute("style", "display: block; background-color:aqua; color: darkblue; font-weight: bold; border-radius: 7px; padding: 10px 30px; font-size: 22px; margin: 10px auto;");
-initInput.setAttribute("style", "font-size: 30px; text-align: center;");
-initInput.setAttribute("type", "text");
-initInput.setAttribute("name", "initials");
-initInput.setAttribute("placeholder", "Enter your initials");
+
 // end element styling
 
 // questions and answers
@@ -137,7 +134,6 @@ var checkAnswer = function (event) {
 
     if (clicked.innerText === questions[questionCounter].answer) {
         console.log("yay")
-        // nextQuestion();
     }
     else {
         console.log("nope");
@@ -159,8 +155,8 @@ countdown = function () {
             timeLeft = 0;
             countdownDisplay.innerText = "";
             clearInterval(timerInterval);
-            console.log("time's up!")
             endGame();
+            return;
         }
     }, 1000);
 };
@@ -169,20 +165,21 @@ endGame = function () {
     // display score
     // prompt for initials
     // save initials in localStorage
-    console.log("ENDGAME");
     intro.innerHTML = 'Your score is ' + timeLeft;
     intro.setAttribute("style", "font-size: 40px; margin-top: 50px;");
-    body.appendChild(highScore);
-    body.appendChild(initInput);
-    body.appendChild(initBtn);
-    initBtn.innerText = "Submit";
+    localStorage.setItem("Score", timeLeft);
+    saveInitials = prompt("What are your initials?");
+    localStorage.setItem("Initials", initials);
+
+    playAgain();
 }
 
-saveScore = function () {
-
+playAgain = function (){
+    body.appendChild(initBtn);
+    initBtn.innerText = "Play again?";
 }
 
 // start quiz
 startBtn.addEventListener("click", startQuiz);
 choicesSection.addEventListener("click", checkAnswer);
-initBtn.addEventListener("click", saveScore);
+initBtn.addEventListener("click", startQuiz);
