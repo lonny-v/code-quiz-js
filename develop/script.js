@@ -20,12 +20,15 @@ var displayChoice1 = document.createElement("li");
 var displayChoice2 = document.createElement("li");
 var displayChoice3 = document.createElement("li");
 var displayChoice4 = document.createElement("li");
+var highScore = document.createElement("form");
+var initInput = document.createElement("input");
+var initBtn = document.createElement("button");
 
-var timeLeft = 60;
+var timeLeft = 30;
 
 
 // element styling
-body.setAttribute("style", "text-align:center;");
+body.setAttribute("style", "text-align:center; align-items: center;");
 intro.setAttribute("style", "margin-top:200px; line-height: 2.8;");
 startBtn.setAttribute("style", "font-size: 30px; background-color:aqua; color: darkblue; font-weight: bold; border-radius: 7px; padding: 10px 30px;")
 countdownDisplay.setAttribute("style", "text-align:right; margin: 45px 100px; font-size: 40px;");
@@ -35,6 +38,12 @@ displayChoice1.setAttribute("style", "background-color: lightblue; margin-bottom
 displayChoice2.setAttribute("style", "background-color: lightblue; margin-bottom: 10px; padding: 20px 60px;");
 displayChoice3.setAttribute("style", "background-color: lightblue; margin-bottom: 10px; padding: 20px 60px;");
 displayChoice4.setAttribute("style", "background-color: lightblue; margin-bottom: 10px; padding: 20px 60px;");
+highScore.setAttribute("style", "margin-top: 100px; font-size: 30px;");
+initBtn.setAttribute("style", "display: block; background-color:aqua; color: darkblue; font-weight: bold; border-radius: 7px; padding: 10px 30px; font-size: 22px; margin: 10px auto;");
+initInput.setAttribute("style", "font-size: 30px; text-align: center;");
+initInput.setAttribute("type", "text");
+initInput.setAttribute("name", "initials");
+initInput.setAttribute("placeholder", "Enter your initials");
 // end element styling
 
 // questions and answers
@@ -91,7 +100,7 @@ var startQuiz = function () {
     // display question first question
     intro.innerHTML = "";
     intro.setAttribute("style", "margin-top: 0px;");
-    body.appendChild(countdownDisplay);
+    intro.appendChild(countdownDisplay);
     countdown();
     nextQuestion();
 };
@@ -104,7 +113,7 @@ var nextQuestion = function () {
     // if incorrect subtract 20 seconds
     if (!questions[questionCounter]) {
         endGame();
-        return
+        return;
     }
 
     displayQuestion.textContent = questions[questionCounter].question;
@@ -113,8 +122,8 @@ var nextQuestion = function () {
     displayChoice3.textContent = questions[questionCounter].choice3;
     displayChoice4.textContent = questions[questionCounter].choice4;
 
-    body.appendChild(displayQuestion);
-    body.appendChild(choicesSection);
+    intro.appendChild(displayQuestion);
+    intro.appendChild(choicesSection);
     choicesSection.appendChild(displayChoice1);
     choicesSection.appendChild(displayChoice2);
     choicesSection.appendChild(displayChoice3);
@@ -129,12 +138,10 @@ var checkAnswer = function (event) {
     if (clicked.innerText === questions[questionCounter].answer) {
         console.log("yay")
         // nextQuestion();
-        console.log(timeLeft);
     }
     else {
         console.log("nope");
         timeLeft = timeLeft - 20;
-        console.log(timeLeft);
     }
     questionCounter++
     nextQuestion();
@@ -149,10 +156,11 @@ countdown = function () {
             timeLeft--;
         }
         else {
+            timeLeft = 0;
             countdownDisplay.innerText = "";
             clearInterval(timerInterval);
             console.log("time's up!")
-            // endGame();
+            endGame();
         }
     }, 1000);
 };
@@ -161,8 +169,20 @@ endGame = function () {
     // display score
     // prompt for initials
     // save initials in localStorage
+    console.log("ENDGAME");
+    intro.innerHTML = 'Your score is ' + timeLeft;
+    intro.setAttribute("style", "font-size: 40px; margin-top: 50px;");
+    body.appendChild(highScore);
+    body.appendChild(initInput);
+    body.appendChild(initBtn);
+    initBtn.innerText = "Submit";
+}
+
+saveScore = function () {
+
 }
 
 // start quiz
 startBtn.addEventListener("click", startQuiz);
 choicesSection.addEventListener("click", checkAnswer);
+initBtn.addEventListener("click", saveScore);
