@@ -10,6 +10,7 @@
 var body = document.body;
 // use this to remove all intro content after start button is clicked
 var intro = document.querySelector("#intro");
+var displayScores = document.getElementById("#displayScores");
 // display time left in countdown
 var countdownDisplay = document.createElement("h3");
 var startBtn = document.querySelector("#startBtn");
@@ -20,7 +21,8 @@ var displayChoice1 = document.createElement("li");
 var displayChoice2 = document.createElement("li");
 var displayChoice3 = document.createElement("li");
 var displayChoice4 = document.createElement("li");
-var highScore = document.createElement("h2");
+var highScore = document.createElement("a");
+var scoresList = document.createElement("h4");
 var initInput = document.createElement("input");
 var initBtn = document.createElement("button");
 
@@ -167,19 +169,31 @@ endGame = function () {
     // save initials in localStorage
     intro.innerHTML = 'Your score is ' + timeLeft;
     intro.setAttribute("style", "font-size: 40px; margin-top: 50px;");
-    localStorage.setItem("Score", timeLeft);
-    saveInitials = prompt("What are your initials?");
+    score = timeLeft
+    localStorage.setItem("Score", score);
+    initials = prompt("What are your initials?");
     localStorage.setItem("Initials", initials);
+    
 
-    playAgain();
-}
-
-playAgain = function (){
     body.appendChild(initBtn);
     initBtn.innerText = "Play again?";
+    body.appendChild(highScore);
+    highScore.appendChild(scoresList);
+    scoresList.innerText = "View high scores";
+    highScore.href = "./endGame.html";
 }
 
+viewScores = function() {
+    recentInit = localStorage.getItem("Initials", initials);
+    console.log(recentInit);
+    recentScore = localStorage.getItem("Score", score);
+    console.log(recentScore);
+
+    displayScores.innerText = recentInit, recentScore;
+
+}
 // start quiz
 startBtn.addEventListener("click", startQuiz);
 choicesSection.addEventListener("click", checkAnswer);
 initBtn.addEventListener("click", startQuiz);
+scoresList.addEventListener("click", viewScores);
