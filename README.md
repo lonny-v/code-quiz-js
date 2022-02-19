@@ -1,4 +1,6 @@
-# code-quiz-js
+# JavaScript Quiz
+
+https://lonny-v.github.io/code-quiz-js/
 
 ## Built with minimal HTML, powered dynamically with JavaScript
 
