@@ -24,12 +24,11 @@ var displayChoice4 = document.createElement("li");
 var highScore = document.createElement("a");
 var scoresList = document.createElement("h4");
 var initInput = document.createElement("input");
-var initBtn = document.createElement("button");
 
 var timeLeft = 60;
 
 
-// element styling
+// // element styling
 body.setAttribute("style", "text-align:center; align-items: center;");
 intro.setAttribute("style", "margin-top:200px; line-height: 2.8;");
 startBtn.setAttribute("style", "font-size: 30px; background-color:aqua; color: darkblue; font-weight: bold; border-radius: 7px; padding: 10px 30px;")
@@ -41,7 +40,6 @@ displayChoice2.setAttribute("style", "background-color: lightblue; margin-bottom
 displayChoice3.setAttribute("style", "background-color: lightblue; margin-bottom: 10px; padding: 20px 60px;");
 displayChoice4.setAttribute("style", "background-color: lightblue; margin-bottom: 10px; padding: 20px 60px;");
 highScore.setAttribute("style", "margin-top: 100px; font-size: 30px;");
-initBtn.setAttribute("style", "display: block; background-color:aqua; color: darkblue; font-weight: bold; border-radius: 7px; padding: 10px 30px; font-size: 22px; margin: 10px auto;");
 
 // end element styling
 
@@ -110,6 +108,7 @@ var nextQuestion = function () {
     // // display next question and choices in array
     // // when an answer is clicked, check to see if correct
     // if incorrect subtract 20 seconds
+    console.log(questionCounter);
     if (!questions[questionCounter]) {
         endGame();
         return;
@@ -132,7 +131,7 @@ var nextQuestion = function () {
 
 var checkAnswer = function (event) {
     var clicked = event.target;
-
+console.log(clicked.innerText);
 
     if (clicked.innerText === questions[questionCounter].answer) {
         console.log("yay")
@@ -146,54 +145,36 @@ var checkAnswer = function (event) {
 };
 
 // start timer at 60, deduct 20 seconds for wrong answers
-countdown = function () {
+var countdown = function () {
 
     var timerInterval = setInterval(function () {
         if (timeLeft > 0) {
             countdownDisplay.innerText = timeLeft;
             timeLeft--;
         }
-        else {
-            timeLeft = 0;
-            countdownDisplay.innerText = "";
-            clearInterval(timerInterval);
-            endGame();
-            return;
-        }
     }, 1000);
 };
 
-endGame = function () {
+var endGame = function () {
     // display score
     // prompt for initials
     // save initials in localStorage
+    clearInterval(countdown);
+    countdownDisplay.innerText = "";
     intro.innerHTML = 'Your score is ' + timeLeft;
     intro.setAttribute("style", "font-size: 40px; margin-top: 50px;");
     score = timeLeft
     localStorage.setItem("Score", score);
     initials = prompt("What are your initials?");
     localStorage.setItem("Initials", initials);
-    
 
-    body.appendChild(initBtn);
-    initBtn.innerText = "Play again?";
+
     body.appendChild(highScore);
     highScore.appendChild(scoresList);
     scoresList.innerText = "View high scores";
     highScore.href = "./endGame.html";
 }
 
-viewScores = function() {
-    recentInit = localStorage.getItem("Initials", initials);
-    console.log(recentInit);
-    recentScore = localStorage.getItem("Score", score);
-    console.log(recentScore);
-
-    displayScores.innerText = recentInit, recentScore;
-
-}
-// start quiz
 startBtn.addEventListener("click", startQuiz);
 choicesSection.addEventListener("click", checkAnswer);
-initBtn.addEventListener("click", startQuiz);
-scoresList.addEventListener("click", viewScores);
+playAgainBtn.addEventListener("click", startQuiz);
